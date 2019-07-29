@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>用户登录</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/login.css" />
+		<script src="js/jquery-1.11.3.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+		<script src="js/form2json.js"></script>
+
+
+		<script>
+			$(function () {
+				// 发送ajax  返回session中的time
+				$.ajax({
+					url:"user/time",
+					type:"get",
+					dataType:"json",
+					statusCode:{
+						200:function (data) {
+							if(data!=null){
+								$("#time").html(data);
+							}
+						}
+					}
+				})
+
+			})
+
+		function mysubmit() {
+
+			//获取表单内容
+			var fd=$("#f01").formToJson();
+			//发送Ajax
+			$.ajax({
+				url:"page/user/login",
+				type:"post",
+				data:fd,
+				dataType:"json",
+				statusCode:{
+					200:function (data) {
+
+						if (data){
+							//登录成功
+							location.href="/page/success.html";
+						}else {
+							$("#font01").html("账号或密码无效！")
+						}
+					}
+				}
+			})
+		}
+		</script>
+		
+    </head>
+    <body>
+		<!-- 登录的form表单 -->
+        <form  id="f01">
+            <div class="mycenter">
+	            <div class="mysign">
+	                <div class="col-lg-11 text-center text-info">
+	                    <h2>欢迎访问</h2>
+	                </div>
+	                <div class="col-lg-10">
+	                    <input type="text" id="name" name="name"   class="form-control" placeholder="请输入账户名" required autofocus/>
+	                </div>
+	                <div class="col-lg-10">
+	                    <input type="password" id="password" name="password"  class="form-control" placeholder="请输入密码" required autofocus/>
+	                </div>
+	                <div style="padding-left: 45px">
+	                    <font color="gray">http://www.czxy.com</font>
+	                </div>
+	                <div style="padding-left: 45px" id="font01">
+	                	<!-- 此处展示登录账户密码错误信息 -->
+						
+	                </div>
+	                <div style="padding-left: 45px" id="time">
+	                	<!-- 此处展示cookie中上次登录时间 -->
+						上次登录时间：
+	                </div>
+	              
+	                <div class="col-lg-10">
+	                    <button type="button" onclick="mysubmit()" class="btn btn-success col-lg-12">登录</button>
+	                </div>
+	            </div>
+        	</div>
+        </form>
+    </body>
+</html>
